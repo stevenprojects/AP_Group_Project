@@ -1,11 +1,14 @@
 import unittest
 from unittest.mock import patch, mock_open
-from main import (
+from test import (
     read_integer_between_numbers,
     read_nonempty_string,
     read_integer,
     winner_of_race,
-    display_races
+    display_races,
+    race_venues,
+    runners_data,
+    reading_race_results
 )
 
 class TestMainFunctions(unittest.TestCase):
@@ -35,15 +38,21 @@ class TestMainFunctions(unittest.TestCase):
         times = [320, 300, 310]
         self.assertEqual(winner_of_race(ids, times), ['R2', 'R3', 'R1'])
 
-    def test_display_races(self):
-        ids = ['R1', 'R2', 'R3']
-        times = [125, 240, 360]
-        venue = "Test Venue"
-        podium = ['R1', 'R2', 'R3']
-        with patch('builtins.print') as mock_print:
-            display_races(ids, times, venue, podium)
-            mock_print.assert_called()
+    @patch('builtins.open', new_callable=mock_open, read_data="Venue1\nVenue2\n")
+    def test_race_venues(self, mock_file):
+        self.assertEqual(race_venues(), ['Venue1', 'Venue2'])
 
+    @patch('builtins.open', new_callable=mock_open, read_data="Runner1,R1\nRunner2,R2\n")
+    def test_runners_data(self, mock_file):
+        names, ids = runners_data()
+        self.assertEqual(names, ['Runner1', 'Runner2'])
+        self.assertEqual(ids, ['R1', 'R2'])
+
+    @patch('builtins.open', new_callable=mock_open, read_data="R1,320\nR2,300\nR3,310\n")
+    def test_reading_race_results(self, mock_file):
+        ids, times = reading_race_results("Venue1")
+        self.assertEqual(ids, ['R1', 'R2', 'R3'])
+        self.assertEqual(times, [320, 300, 310])
 
 if __name__ == '__main__':
     unittest.main()
