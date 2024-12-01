@@ -46,7 +46,7 @@ def runners_data():
 def race_venues():
     with open("races.txt") as input_file:
         lines = input_file.readlines()
-    races_location = [line.split(",")[0].strip() for line in lines]]
+    races_location = [line.split(",")[0].strip() for line in lines]
     return races_location
 
 
