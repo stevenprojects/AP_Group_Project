@@ -37,7 +37,7 @@ def runners_data():
     runners_id = []
     for line in lines:
         split_line = line.strip().split(",")
-        if len(split_line) >= 2:  # Ensure valid format
+        if len(split_line) >= 2:  
             runners_name.append(split_line[0])
             runners_id.append(split_line[1])
     return runners_name, runners_id
@@ -46,7 +46,7 @@ def runners_data():
 def race_venues():
     with open("races.txt") as input_file:
         lines = input_file.readlines()
-    races_location = [line.split(",")[0].strip() for line in lines]]
+    races_location = [line.split(",")[0].strip() for line in lines]
     return races_location
 
 
@@ -58,7 +58,7 @@ def reading_race_results(location):
         time_taken = []
         for line in lines:
             split_line = line.strip().split(",")
-            if len(split_line) >= 2:  # Ensure valid format
+            if len(split_line) >= 2:  
                 id.append(split_line[0])
                 time_taken.append(int(split_line[1]))
         return id, time_taken
@@ -69,7 +69,7 @@ def reading_race_results(location):
 
 def winner_of_race(id, time_taken):
     sorted_times = sorted(zip(time_taken, id))
-    return [runner[1] for runner in sorted_times[:3]]  # Top 3
+    return [runner[1] for runner in sorted_times[:3]]  
 
 
 def display_races(id, time_taken, venue, podium):
@@ -124,7 +124,7 @@ def display_podium_places(races_location):
     print("=" * 50)
     for venue in races_location:
         id, time_taken = reading_race_results(venue)
-        if id and time_taken:  # Ensure data exists for the race
+        if id and time_taken:  
             podium = winner_of_race(id, time_taken)
             print(f"{venue:<20}{podium[0]:<10}{podium[1]:<10}{podium[2]:<10}")
 
@@ -146,8 +146,8 @@ def show_winners(races_location, runners_name, runners_id):
     winners = set()
     for venue in races_location:
         id, time_taken = reading_race_results(venue)
-        if id and time_taken:  # Ensure data exists
-            winners.add(winner_of_race(id, time_taken)[0])  # Add 1st place
+        if id and time_taken:  
+            winners.add(winner_of_race(id, time_taken)[0])  
     print("Runners who have won at least one race:")
     for i, runner_id in enumerate(runners_id):
         if runner_id in winners:
@@ -158,7 +158,7 @@ def show_non_podium_runners(races_location, runners_name, runners_id):
     podium_runners = set()
     for venue in races_location:
         id, time_taken = reading_race_results(venue)
-        if id and time_taken:  # Ensure data exists
+        if id and time_taken:  
             podium = winner_of_race(id, time_taken)
             podium_runners.update(podium)
     print("Runners who have not taken a podium position in any race:")
